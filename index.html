@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-visual">
+  <title>StickyTech</title>
+  <link rel="icon" type="image/png" href="StickyTech_Mascot_Logo.png">
+  <link rel="apple-touch-icon" href="StickyTech_Mascot_Logo.png">
+  <link rel="stylesheet" href="index.css">
+</head>
+<body data-theme="desk">
+  <button id="menuBtn" class="menu-btn" type="button" aria-expanded="false" aria-controls="bar"> <img src="Screenshot 2026-11-01 170806.png" alt="" id="Menu-pic"> <p id="description"> Toolbar ▾</p></button>
+  <header class="bar" id="bar" hidden aria-label="Toolbar">
+    <p class="gt">Notes</p>
+    <div class="tools">
+      <div class="swatches" role="radiogroup" aria-label="Note color">
+        <button class="swatch on" data-color="yellow" aria-label="Yellow"></button>
+        <button class="swatch" data-color="pink" aria-label="Pink"></button>
+        <button class="swatch" data-color="mint" aria-label="Mint"></button>
+        <button class="swatch" data-color="sky" aria-label="Sky blue"></button>
+        <button class="swatch" data-color="peach" aria-label="Peach"></button>
+        <button class="swatch" data-color="lilac" aria-label="Lilac"></button>
+        <button class="swatch" data-color="lime" aria-label="Lime"></button>
+      </div>
+      <select id="font" aria-label="Handwriting" title="Handwriting for new notes, or the selected note">
+        <option value="hand">✍️ Handwriting</option>
+        <option value="scribble">🖋️ Scribble</option>
+        <option value="marker">🖍️ Marker</option>
+        <option value="neat">🌼 Neat</option>
+        <option value="type">⌨️ Typewriter</option>
+        <option value="plain">🔤 Plain</option>
+      </select>
+      <select id="emoji" aria-label="Emoji stamp" title="Emoji for new notes, or the selected note">
+        <option value="">🙂 No emoji</option>
+        <option value="📚">📚 Books</option>
+        <option value="✏️">✏️ Write</option>
+        <option value="⭐">⭐ Star</option>
+        <option value="🔥">🔥 Hot</option>
+        <option value="💡">💡 Idea</option>
+        <option value="🎯">🎯 Goal</option>
+        <option value="🧪">🧪 Science</option>
+        <option value="🧮">🧮 Math</option>
+        <option value="🎨">🎨 Art</option>
+        <option value="❗">❗ Important</option>
+        <option value="✅">✅ Done</option>
+      </select>
+      <button id="add" class="btn">New note</button>
+      <button id="emojiBtn" class="btn ghost" title="Put an emoji inside the note you are typing">😀 Emoji</button>
+    </div>
+    <p class="gt">Board</p>
+    <div class="tools">
+      <input id="search" type="search" placeholder="Search notes (press /)" aria-label="Search notes">
+      <select id="theme" aria-label="Board background">
+        <option value="desk">🩶 Desk</option>
+        <option value="cork">🟤 Cork</option>
+        <option value="lavender">💜 Lavender</option>
+        <option value="mint">💚 Mint</option>
+        <option value="night">🌙 Night</option>
+        <option value="blueprint">📐 Blueprint</option>
+      </select>
+      <button id="music" class="btn ghost" title="Calm background music">🎵 Music</button>
+      <button id="export" class="btn ghost">Export</button>
+      <button id="clear" class="btn ghost">Clear board</button>
+    </div>
+    <p class="gt">Quick tools</p>
+    <div class="tools">
+      <select id="tpl" aria-label="New note from a template">
+        <option value="">📋 New from template…</option>
+        <option value="todo">☑️ To-do list</option>
+        <option value="hw">📚 Homework</option>
+        <option value="exam">🧪 Exam prep</option>
+        <option value="goal">🎯 Study goal</option>
+      </select>
+      <button id="tidy" class="btn ghost" type="button" title="Line loose notes up in a grid (pinned notes stay)">🧹 Tidy up</button>
+      <button id="dup" class="btn ghost" type="button" title="Copy the selected note">📄 Duplicate</button>
+      <button id="undo" class="btn ghost" type="button" title="Bring back the last tossed note (Ctrl+Z)">↩ Undo toss</button>
+    </div>
+    <div class="tools fchips" id="cfilter" role="group" aria-label="Show only one color"><span>Show only</span></div>
+    <p class="gt">Focus timer</p>
+    <div class="tools timer">
+      <output id="tClock">25:00</output>
+      <button id="tGo" class="btn sm" type="button">Start</button>
+      <button id="tReset" class="btn ghost sm" type="button">Reset</button>
+      <span class="tpresets">
+        <button class="btn ghost sm tp on" type="button" data-min="25">Focus 25</button>
+        <button class="btn ghost sm tp" type="button" data-min="5">Break 5</button>
+        <button class="btn ghost sm tp" type="button" data-min="15">Long 15</button>
+      </span>
+    </div>
+    <div class="tools barfoot">
+      <button id="drawerBtn" class="btn" type="button">📁 Folders</button>
+      <button id="schedBtn" class="btn" type="button">🗓️ My schedule</button>
+      <p id="count" aria-live="polite"></p>
+    </div>
+  </header>
+
+  <img class="brand" src="StickyTech_Mascot_Logo.png" alt="StickyTech" draggable="false">
+
+  <main id="board" aria-label="Note board">
+    <p id="empty" class="empty">Double-click anywhere, or press N, to stick your first note.</p>
+  </main>
+
+  <div id="tray" class="pop" hidden>
+    <div id="emojiGrid" class="emoji-grid"></div>
+    <p class="hint">Type :heart: :cry: :hugot: :multo: :ph: or faces like &lt;3 and :( and they turn into emoji.</p>
+  </div>
+
+  <section id="musicPanel" class="pop" hidden aria-label="Music">
+    <div class="pop-head"><strong>🎵 Music</strong><button id="musicClose" class="xbtn" aria-label="Close music">×</button></div>
+    <div id="player" class="player"></div>
+    <div class="tabs" role="tablist">
+      <button class="tab on" data-tab="mine">My music</button>
+      <button class="tab" data-tab="ambient">Ambient</button>
+    </div>
+
+    <div class="tabpane" data-pane="mine">
+      <div class="row">
+        <select id="plSel" aria-label="Playlist"></select>
+        <button id="plNew" class="btn ghost sm" type="button">+ New</button>
+        <button id="plRename" class="btn ghost sm" type="button">Rename</button>
+        <button id="plDel" class="btn ghost sm" type="button">Delete</button>
+      </div>
+      <ul id="plTracks" class="tracks"></ul>
+      <div class="row">
+        <button id="mp3Add" class="btn sm" type="button">＋ Add MP3 files</button>
+        <button id="mp3Folder" class="btn sm" type="button" title="Add every .mp3 inside a folder">📁 Add folder</button>
+        <input id="mp3File" type="file" accept=".mp3,audio/mpeg" multiple hidden>
+        <input id="mp3Dir" type="file" webkitdirectory multiple hidden>
+      </div>
+      <p class="hint">Add songs you downloaded (.mp3). You can pick several at once, add a whole folder, or drag them into this box. They stay saved in this browser, and press a song to play it.</p>
+    </div>
+
+    <div class="tabpane" data-pane="ambient" hidden>
+      <p class="hint">Soft instrumental moods made live in your browser, no lyrics.</p>
+      <div id="moods" class="moods"></div>
+      <div class="row">
+        <button id="ambToggle" class="btn sm" type="button">▶ Play ambient</button>
+        <label class="vol">Volume <input id="vol" type="range" min="0.1" max="1" step="0.05" value="0.5"></label>
+      </div>
+    </div>
+  </section>
+
+  <aside id="drawer" class="drawer" aria-label="Folders" inert>
+    <div class="dhead"><strong>📁 Folders</strong>
+      <span class="pbtns">
+        <button id="dPin" type="button" aria-pressed="false">📌</button>
+        <button id="dClose" type="button" class="xbtn" aria-label="Close folders">×</button>
+      </span>
+    </div>
+    <div class="dtools">
+      <button id="fNew" type="button" class="btn sm">+ New folder</button>
+      <p class="hint">Drag a note onto a folder to file it away. 📌 pins the drawer open (or a note to the top of its folder).</p>
+    </div>
+    <div id="folders"></div>
+  </aside>
+  <button id="dTab" class="dtab" type="button">📁 Folders</button>
+
+  <aside id="sched" class="drawer sdrawer" aria-label="My schedule" inert>
+    <div class="dhead"><strong>🗓️ My schedule</strong><button id="sClose" type="button" class="xbtn" aria-label="Close schedule">×</button></div>
+    <div class="sbody">
+      <div class="pic">
+        <p id="picEmpty" class="hint">Add photos of your schedule, notes or anything you want at hand. You can pick several at once.</p>
+        <div id="picGrid" class="pgrid"></div>
+        <div class="row">
+          <button id="picAdd" class="btn sm" type="button">📷 Add pictures</button>
+        </div>
+        <label class="pdef"><input id="picDefault" type="checkbox"> Put new pictures on the main page</label>
+        <p class="hint">Tick “Show on main page” under a picture to pin it onto the board. Drag it to move, drag its corner to resize, double-click to enlarge.</p>
+        <input id="picFile" type="file" accept="image/*" multiple hidden>
+      </div>
+      <details class="rset">
+        <summary>⏰ Reminder settings</summary>
+        <label>Default time <input id="rTime" type="time" value="08:00"></label>
+        <label>Remind me
+          <select id="rLead">
+            <option value="0">at that time</option>
+            <option value="10">10 minutes before</option>
+            <option value="30">30 minutes before</option>
+            <option value="60">1 hour before</option>
+            <option value="1440">1 day before</option>
+          </select></label>
+        <label><span>Play a sound</span> <input id="rSound" type="checkbox" checked></label>
+        <label><span>Browser notifications</span> <input id="rNotif" type="checkbox"></label>
+        <button id="rTest" class="btn ghost sm" type="button">Send test reminder</button>
+      </details>
+      <form id="sForm" class="sform">
+        <input name="text" placeholder="Remind me to…" maxlength="80" required aria-label="Reminder">
+        <input name="due" type="date" required aria-label="Date">
+        <input name="time" type="time" aria-label="Time (blank uses your default)" title="Time (blank uses your default)">
+        <button class="btn sm" type="submit">Add</button>
+      </form>
+      <div id="sList"></div>
+    </div>
+  </aside>
+  <button id="sTab" class="dtab stab" type="button">🗓️ My schedule</button>
+  <div id="lightbox" hidden><img alt="My class schedule"></div>
+
+  <div id="toast" role="status"></div>
+  <script src="index.js"></script>
+</body>
+</html>
